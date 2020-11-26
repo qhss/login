@@ -20,15 +20,20 @@ public class LoginController {
     @Autowired
     SysUserService sysUserService;
 
+    /**
+     * 账号：test test123是通过MD5加密的
+     * 若想添加账号，需要先将shiro里面的filter注释掉，因为没有经过登录就注册了账号
+     * 或者先进行登录接口操作后
+     */
     @PostMapping("/login")
-    public AjaxResult ajaxLogin(String username, String password)
+    public AjaxResult ajaxLogin(String loginName, String password)
     {
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        UsernamePasswordToken token = new UsernamePasswordToken(loginName, password);
         Subject subject = SecurityUtils.getSubject();
         try
         {
             subject.login(token);
-            return AjaxResult.success();
+            return AjaxResult.success("登录成功");
         }
         catch (AuthenticationException e)
         {
